@@ -66,13 +66,14 @@ Then call the start method to initialize the logger and start its worker thread:
   ```
 
 Each time that you want to log something call the log method by passing an integer that represents
-the level and the message. You can also use one og the predefined macros ERROR(m), WARN(m), INFO(m),
+the level and the message. You can also use one of the predefined macros ERROR(m), WARN(m), INFO(m),
 DEBUG(m), and TRACE(m). However, feel free to use your own levels:
 
   ```C
   logger.log(0, "message1");
-  ...
   logger.ERROR("message2");
+  ```
+
 
 Finally, call the stop method to stop the logger:
 
