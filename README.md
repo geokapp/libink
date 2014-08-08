@@ -53,7 +53,7 @@ and a header message:
 
   ```C
   ink::Logger logger;
-  logger.set_level(WARNING);
+  logger.set_level(LEVEL_WARNING);
   logger.set_header("App name");
   logger.set_log_file("/var/log/app/app.log");
 
