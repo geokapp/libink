@@ -22,19 +22,19 @@
 
 namespace ink {
 
-// Macros for different log levels.
-#define ERROR(m) log(0,m)
-#define WARN(m)  log(1,m)
-#define INFO(m)  log(2,m)
-#define DEBUG(m) log(3,m)
-#define TRACE(m) log(4,m)
-
 // Definitions for common log levels.
 #define LEVEL_ERROR   0
 #define LEVEL_WARNING 1
 #define LEVEL_INFO    2
 #define LEVEL_DEBUG   3
 #define LEVEL_TRACE   4
+
+// Macros for different log levels.
+#define ERROR(m) log(0,m)
+#define WARN(m)  log(1,m)
+#define INFO(m)  log(2,m)
+#define DEBUG(m) log(3,m)
+#define TRACE(m) log(4,m)
 
 /**
  * @name Logger - The logger object.
