@@ -29,6 +29,13 @@ namespace ink {
 #define DEBUG(m) log(3,m)
 #define TRACE(m) log(4,m)
 
+// Definitions for common log levels.
+#define LEVEL_ERROR   0
+#define LEVEL_WARNING 1
+#define LEVEL_INFO    2
+#define LEVEL_DEBUG   3
+#define LEVEL_TRACE   4
+
 /**
  * @name Logger - The logger object.
  *
