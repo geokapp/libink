@@ -125,6 +125,7 @@ Logger::Logger() {
   pthread_mutex_init(&m_mut, NULL);
   m_queue = new Queue();
   m_terminate = false;
+  m_logger_started = false;
   m_logger_died = false;
 }
 
@@ -141,6 +142,12 @@ Logger::Logger(const int32_t level, const std::string log_file,
   m_level = level;
   m_log_filename = log_file;
   m_header = header;
+  pthread_cond_init(&m_cond, NULL);
+  pthread_mutex_init(&m_mut, NULL);
+  m_queue = new Queue();
+  m_terminate = false;
+  m_logger_started = false;
+  m_logger_died = false;
 }
 
 /**
@@ -149,7 +156,7 @@ Logger::Logger(const int32_t level, const std::string log_file,
  * The desstructor of the Logger object.
  */
 Logger::~Logger() {
-  if (!m_terminate) {
+  if (!m_terminate && m_logger_started) {
     // Stop method has not been called. We have to stop the logging thread here.
     this->stop();
   }
@@ -242,6 +249,7 @@ int32_t Logger::start() {
   if (m_log_filestream.is_open()) {
     // Now create the logger thread.
     int32_t status = pthread_create(&m_logger_id, NULL, logger, this);
+    m_logger_started = true;
     return 0;
   } else {
     return 1;
@@ -257,16 +265,18 @@ int32_t Logger::start() {
  * @return Void.
  */
 void Logger::stop() {
-  m_terminate = true;
-  while (!m_logger_died) {
-    pthread_mutex_lock(&m_mut);
-    pthread_cond_signal(&m_cond);
-    pthread_mutex_unlock(&m_mut);
-  }
-  
-  //Wait for the logger thread to terminate.
-  int32_t status = pthread_join(m_logger_id, NULL);
-  m_log_filestream.close();
+  if (m_logger_started) {
+    m_terminate = true;
+    while (!m_logger_died) {
+      pthread_mutex_lock(&m_mut);
+      pthread_cond_signal(&m_cond);
+      pthread_mutex_unlock(&m_mut);
+    }
+    
+    //Wait for the logger thread to terminate.
+    int32_t status = pthread_join(m_logger_id, NULL);
+    m_log_filestream.close();
+  }  
 }
 
 /**

@@ -88,6 +88,7 @@ class Logger {
   std::string m_header;
   int32_t m_level;
   pthread_t m_logger_id;
+  bool m_logger_started;
   bool m_logger_died;
   bool m_terminate;
   pthread_cond_t m_cond;
